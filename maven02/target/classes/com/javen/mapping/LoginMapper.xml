@@ -1,47 +1,45 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.javen.dao.LoginDao" >
-  <resultMap id="BaseResultMap" type="com.javen.model.Login" >
-    <id      column="id"        property="id"        jdbcType="INTEGER" />
-    <result  column="userName"  property="userName"  jdbcType="VARCHAR" />
-    <result  column="password"  property="password"  jdbcType="VARCHAR" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.javen.dao.LoginDao">
+  <resultMap id="BaseResultMap" type="com.javen.model.Login">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="acc" jdbcType="VARCHAR" property="acc" />
+    <result column="pwd" jdbcType="VARCHAR" property="pwd" />
+    <result column="tel" jdbcType="BIGINT" property="tel" />
+    <result column="admin" jdbcType="INTEGER" property="admin" />
   </resultMap>
-  
-  
-  <sql id="Base_Column_List" >
-   	id,userName,password
+  <sql id="Base_Column_List">
+    id, acc, pwd, tel, admin
   </sql>
-  
-  
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from login
-    where id = #{id,jdbcType=INTEGER}
+    from user
+    where acc = #{acc,jdbcType=VARCHAR}
   </select>
-  
-  <select id="selectAll" resultMap="BaseResultMap" >
-    select 
+  <select id="selectAll" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
     <include refid="Base_Column_List" />
-    from login
+    from user
   </select>
-
-
-   <delete id="deleteByPrimaryKey"  parameterType="java.lang.Integer">
-    delete from login
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  
-   <insert id="insert" parameterType="com.javen.model.Login" >
-    insert into login (userName, password)
-    values (#{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR})
-   </insert>
-  
-   <update id="updateByPrimaryKey"  parameterType="com.javen.model.Login" >
-    update login
-    set userName = #{userName,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR}
-      where id = #{id,jdbcType=INTEGER}
+  <insert id="insert" parameterType="com.javen.model.Login">
+    insert into user 
+    (acc, pwd, tel, admin)
+    values 
+    ( #{acc,jdbcType=VARCHAR},
+      #{pwd,jdbcType=VARCHAR}, 
+      #{tel,jdbcType=BIGINT}, 
+      #{admin,jdbcType=INTEGER}
+    )
+  </insert>
+  <update id="updateByAcc" parameterType="com.javen.model.Login">
+    update user 
+    set 
+    pwd = #{pwd,jdbcType=VARCHAR}
+    where acc = #{acc,jdbcType=VARCHAR}
   </update>
-
 </mapper>

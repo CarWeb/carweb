@@ -8,7 +8,7 @@ import java.util.List;
 
 
 /***
- * 	璇ョ被鐨勪富瑕佸姛鑳芥槸灏嗗璞＄被鍨嬶紝杞崲涓簂ayui鑳借瘑鍒殑json
+ * 
  * @author Administrator
  *
  */
@@ -16,7 +16,6 @@ public class ObjtoLayJson {
 	
 	public static  String toJson(Object object,String[] colums) throws Exception {
 		 String[] dataRow = new String[colums.length];
-		//璋冪敤璇ean鐨刧et鏂规硶
 		Field[] fields = object.getClass().getDeclaredFields();
 		for (int i = 0; i < fields.length; i++) {
 			String fieldName = fields[i].getName();
@@ -28,11 +27,11 @@ public class ObjtoLayJson {
 			}else {
 				dataRow[i] =  method.invoke(object).toString();
 			}
-			System.out.println("get鐨勮緭鍑虹粨鏋滐細"+method.invoke(object));
+			System.out.println("get"+method.invoke(object));
 		}
 		System.out.println(Arrays.toString(dataRow));
 		
-		String jsonStr = "[{\"status\":0}, {\"message\": \"鎴愬姛\" }, {\"count\": 1000},{\"rows\":{\"item\":[";
+		String jsonStr = "[{\"status\":0}, {\"message\": \"成功了\" }, {\"count\": 1000},{\"rows\":{\"item\":[";
 		for(int i = 0; i < dataRow.length; i++) {
 			String arr = "{";
 			if (dataRow[i] == null || "NULL".equals(dataRow[i]) ) {
@@ -70,7 +69,7 @@ public class ObjtoLayJson {
 				}else {
 					dataRow[count][i] =  method.invoke(object).toString();
 				}
-				System.out.println("get鐨勮緭鍑虹粨鏋滐細"+method.invoke(object));
+				System.out.println(method.invoke(object));
 			
 			}
 			count += 1;
@@ -78,7 +77,7 @@ public class ObjtoLayJson {
 	
 		System.out.println(Arrays.deepToString(dataRow));
 		
-		String jsonStr = "[{\"status\":0}, {\"message\": \"鎴愬姛\" }, {\"count\": 1000},{\"rows\":{\"item\":[";
+		String jsonStr = "[{\"status\":0}, {\"message\": \"成功了\" }, {\"count\": 1000},{\"rows\":{\"item\":[";
 		for(int i = 0; i < dataRow.length; i++) {
 			System.out.println(i);
 			String arr = "{";

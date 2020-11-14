@@ -1,124 +1,165 @@
 package com.javen.controller;
 
-
 import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.transform.Source;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;  
 import org.springframework.ui.Model;  
 import org.springframework.web.bind.annotation.RequestMapping;  
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.alibaba.fastjson.JSONObject;
-import com.javan.util.ObjtoLayJson;
+import com.alibaba.fastjson.JSON;
 import com.javen.model.Login;
-import com.javen.service.ILoginService;
+import com.javen.service.LoginService;
 
-@Controller  //返回指定页面  ajax 不能接受到页面的返回 ，所以说
+@Controller 
 @RequestMapping("/login") 
 public class LoginController {  
 	
-	private static Logger log=LoggerFactory.getLogger(LoginController.class);
-	
 	@Resource  
-	private ILoginService loginService;     
-    
-    // /user/test?id=1
-    @RequestMapping(value="/test", method=RequestMethod.GET)  
-    public String test(HttpServletRequest request,Model model){  
-        return "back"; 
-    }
-    
-    //返回字符串
-    @ResponseBody
-    @RequestMapping(value="/selectById", method=RequestMethod.GET,produces = "text/plain;charset=utf-8")  
-    public String selectById(HttpServletRequest request) throws Exception{  
-    	String  idString = request.getParameter("id");
-    	Integer idInteger = Integer.valueOf(idString);
-    	Login login = loginService.selectByPrimaryKey(idInteger);
-    	System.out.println(login.toString());
-    	String[] colums = {"id","userName","password"};
-    	String data = ObjtoLayJson.toJson(login, colums);
-    	System.out.println(data);
-        return data; 
-        
-        
-    }
+	private LoginService loginService;     
+	@RequestMapping(value="/back", method=RequestMethod.GET,produces = "text/plain;charset=utf-8")
+    public String back(HttpServletRequest request,Model model) throws Exception{  
+		request.setCharacterEncoding("utf-8");
+//		String string = request.getParameter(""); 
+//		System.out.println(string);
+		return null;
+	}
     
     @ResponseBody
-    @RequestMapping(value="/deleteByPrimaryKey", method=RequestMethod.GET,produces = "text/plain;charset=utf-8")  
-    public String deleteByPrimaryKey(HttpServletRequest request) {
-    	String  idString = request.getParameter("id");
-    	Integer idInteger = Integer.valueOf(idString);
-    	loginService.deleteByPrimaryKey(idInteger);
-    	String data = "{\"data\":\"返回成功\"}"; 
-        return data; 
-    }
-    
-    @ResponseBody
-    @RequestMapping(value="/insert", method=RequestMethod.GET,produces = "text/plain;charset=utf-8")  
-    public String insert(HttpServletRequest request) {
-    	//插入数据库
-    	String usernameString = request.getParameter("username");
-    	String passwordString = request.getParameter("password");
+    @RequestMapping(value="/selectByName", method=RequestMethod.GET,produces = "text/json;charset=utf-8")  
+    public String selectByName(HttpServletRequest request) throws Exception{
+    	request.setCharacterEncoding("utf-8");
+    	String  acc = request.getParameter("acc");
+    	String  pwd = request.getParameter("pwd");
+    	if(acc == ""||acc.equals("")||acc.length()==0) {
+    		System.out.println("账号输入为空");
+    		return null;
+    	}
+    	else if(pwd == ""||pwd.equals("")||pwd.length()==0) {
+    		System.out.println("密码输入为空");
+    		return null;
+    	}
+    	else {
+    		System.out.println("用户请求登录..  账号: "+acc+" 密码: "+pwd+"");
+        	Login login = loginService.selectByName(acc);
+        	String json = JSON.toJSONString(login);
+        	System.out.println(json);
+        	if(acc.length() == 0||pwd.length() == 0) {
+        		return "0";
+        	}else{
+        		return json;
+        	}
+		}
     	
+    }
+    @ResponseBody
+    @RequestMapping(value="/ChangePwdByName", method=RequestMethod.GET,produces = "text/json;charset=utf-8")  
+    public String ChangePwdByName(HttpServletRequest request) throws Exception{
+    	request.setCharacterEncoding("utf-8");
+    	String  acc = request.getParameter("acc");
+    	Login login = loginService.selectByName(acc);
+    	String json = JSON.toJSONString(login);
+    	return json;
+    }
+    @ResponseBody
+    @RequestMapping(value="/SignUpByName", method=RequestMethod.GET,produces = "text/json;charset=utf-8")  
+    public String SignUpByName(HttpServletRequest request) throws Exception{
+    	request.setCharacterEncoding("utf-8");
+    	String  acc = request.getParameter("acc");
+    	Login login = loginService.selectByName(acc);
+    	String json = JSON.toJSONString(login);
+    	return json;
+    }
+    @ResponseBody
+    @RequestMapping(value="/loginCode", method=RequestMethod.GET,produces = "text/plain;charset=utf-8")  
+    public String loginCode(HttpServletRequest request) throws Exception{
+    	request.setCharacterEncoding("utf-8");
+    	String  codeString = request.getParameter("code");
+    	Integer code = Integer.valueOf(codeString);
+    	if(code == 1) {
+    		System.out.println("登录成功!");
+    	}else if(code == 0) {
+    		System.out.println("密码错误..登录失败!");
+    	}else {
+			System.out.println("error");
+		}
+		return null;
+    }
+    @ResponseBody
+    @RequestMapping(value="/selectAll", method=RequestMethod.GET,produces = "text/json;charset=utf-8")  
+    public String selectAll(HttpServletRequest request) throws Exception{
+    	request.setCharacterEncoding("utf-8");
+    	List<Login> list = loginService.selectAll();
+    	String json = JSON.toJSONString(list);
+    	System.out.println(json);
+		return json;
+    }
+    @ResponseBody
+    @RequestMapping(value="/insert", method=RequestMethod.GET,produces = "text/json;charset=utf-8")  
+    public String insert(HttpServletRequest request) throws Exception{
+    	request.setCharacterEncoding("utf-8");
+    	String acc = request.getParameter("acc");
+    	String pwd = request.getParameter("pwd");
+    	String telString = request.getParameter("tel");
+    	Long tel = Long.valueOf(telString);
     	Login login = new Login();
-    	login.setPassword(passwordString);
-    	login.setUserName(usernameString);
-    	
+    	login.setAcc(acc);
+    	login.setPwd(pwd);
+    	login.setTel(tel);
+    	login.setAdmin(0);
     	loginService.insert(login);
-    	
-    	
-    	//给前台返回的东西
-    	String data = "{\"data\":\"返回成功\"}"; 
-        return data; 
+    	System.out.println("用户请求注册: acc:"+acc+" pwd:"+pwd+" tel:"+tel+"");
+    	return null;
     }
-    
     @ResponseBody
-    @RequestMapping(value="/update", method=RequestMethod.GET,produces = "text/plain;charset=utf-8")  
-    public String update(HttpServletRequest request) {
-    	//插入数据库
-    	String idString = request.getParameter("id");
-    	String usernameString = request.getParameter("username");
-    	String passwordString = request.getParameter("password");
-    	Integer idInteger = Integer.valueOf(idString);
-    	
+    @RequestMapping(value="/insertCode", method=RequestMethod.GET,produces = "text/json;charset=utf-8")  
+    public String insertCode(HttpServletRequest request) throws Exception{
+    	request.setCharacterEncoding("utf-8");
+    	String  codeString = request.getParameter("code");
+    	Integer code = Integer.valueOf(codeString);
+    	if(code == 1) {
+    		System.out.println("注册成功!");
+    	}else {
+			System.out.println("注册失败!");
+		}
+    	String  acc = request.getParameter("acc");
+    	Login login = loginService.selectByName(acc);
+    	String json = JSON.toJSONString(login);
+    	return json;
+    }
+    @ResponseBody
+    @RequestMapping(value="/UpdateByAcc", method=RequestMethod.GET,produces = "text/json;charset=utf-8")  
+    public String UpdateByAcc(HttpServletRequest request) throws Exception{
+    	request.setCharacterEncoding("utf-8");
+    	String  acc = request.getParameter("acc");
+    	String  pwd = request.getParameter("password");
     	Login login = new Login();
-    	login.setId(idInteger);
-    	login.setPassword(passwordString);
-    	login.setUserName(usernameString);
-    	
-    	loginService.updateByPrimaryKey(login);
-    	
-    	
-    	//给前台返回的东西
-    	String data = "{\"data\":\"返回成功\"}"; 
-        return data; 
+    	login.setAcc(acc);
+    	login.setPwd(pwd);
+    	loginService.updateByAcc(login);
+    	return null;
     }
-    
-    //返回字符串
     @ResponseBody
-    @RequestMapping(value="/selectAll", method=RequestMethod.GET,produces = "text/plain;charset=utf-8")  
-    public String selectAll(HttpServletRequest request) throws Exception{  	
-    	request.setCharacterEncoding("utf-8");    	
-    	List<Login> logins = loginService.selectAll();
-      	JSONObject jsonObject = new JSONObject();
-      	String jString =jsonObject.toJSONString(logins);
-      	System.out.println(jString);
-      	String[] colums = {"id","userName","password"};
-    	String data = ObjtoLayJson.ListtoJson(logins, colums);
-    	System.out.println(data);
-        return data; 
+    @RequestMapping(value="/UpdateByAccCode", method=RequestMethod.GET,produces = "text/json;charset=utf-8")  
+    public String UpdateByAccCode(HttpServletRequest request) throws Exception{
+    	request.setCharacterEncoding("utf-8");
+    	String codeString = request.getParameter("code");
+    	Integer code = Integer.valueOf(codeString);
+    	if(code == 1) {
+    		System.out.println("修改密码成功!");
+    	}
+    	else {
+    		System.out.println("修改密码失败!");
+    	}
+    	return null;
     }
-   
 }  
+
+
 
 
 
