@@ -29,6 +29,8 @@
 						</div>				
 					</form>
 				</div>
+				<!-- <input class="finish_btn" type="button" value="Login" onclick="showtable()"/>
+				<table id="cardata"></table> -->
 				<!-- <div class="adminlogindiv">
 					<input class="adminlogin" type="button" value="Administrator Login" onclick="adminlogin()"/>
 				</div> -->
@@ -36,6 +38,34 @@
 		</div>
 	</body>
 	<script>
+			
+			/* function showtable(){
+				$.ajax({
+					type: "get", 
+					url: "http://localhost:8080/maven02/login/showtable",   
+					//data: data,
+					cache: false,
+					async : false, 
+					success: function (data,textStatus, jqXHR){
+						var html ='<tr><th>2</th><th>2</th><th>2</th><th>22</th><th>2</th>';
+			        	for(var i=0;i<data.length;i++){
+			        		console.info(data[i]);
+			        		html +='<tr>';
+			        		html +='<td>'+data[i].id+'</td>';
+			        		html +='<td>'+data[i].acc+'</td>';
+			        		html +='<td>'+data[i].pwd+'</td>';
+			        		html +='<td>'+data[i].tel+'</td>';
+			        		html +='<td>'+data[i].admin+'</td>';
+			        		
+				        	html+='</tr>';
+				        	$("#cardata").empty().append(html);
+						}
+					},
+					error:function (XMLHttpRequest, textStatus, errorThrown) { 
+						console.info("error");
+					}
+				});
+			} */
 			function LoginByAcc(){
 				var data = {
 						"acc":$("#acc").val(),
@@ -134,7 +164,7 @@
 				html += '<div class="blank_30"></div>';
 				html += '<div class="input_tit">Password</div>';
 				html += '<div class="input_box">';
-				html += '<input class="input_self" type=""password"" name="password" id="pwd" value="" />';
+				html += '<input class="input_self" type="password" name="password" id="pwd" value="" />';
 				html += '</div>';
 				html += '<div class="finish_box" id="return">';
 				html += '<input class="finish_btn" type="submit" value="Login" onclick="LoginByAcc()"/>';
@@ -162,7 +192,7 @@
 				html += '<div class="blank_30"></div>';
 				html += '<div class="input_tit">Password</div>';
 				html += '<div class="input_box">';
-				html += '<input class="input_self" type=""password"" name="password" id="pwd" value="" />';
+				html += '<input class="input_self" type="password" name="password" id="pwd" value="" />';
 				html += '</div>';
 				html += '<div class="finish_box" id="return">';
 				html += '<input class="finish_btn" type="submit" value="Login" onclick="LoginByAcc()"/>';
@@ -208,7 +238,7 @@
 					html += '<div class="blank_30"></div>';
 					html += '<div class="input_tit">Password</div>';
 					html += '<div class="input_box" >';
-					html += '<input class="input_self" type=""password"" name="password" id="pwd"  value="" />';
+					html += '<input class="input_self" type="password" name="password" id="pwd"  value="" />';
 					html += '</div>';
 					html += '<div class="finish_box" id="return">';
 					html += '<input class="finish_btn" type="button" value="Login" onclick="LoginByAcc()"/>';
@@ -239,15 +269,15 @@
 					html += '<div class="blank_30"></div>';
 					html += '<div class="input_tit">Password</div>';
 					html += '<div class="input_box">';
-					html += '<input class="input_self" type=""password"" name="password" id="cpwd" value="" />';
+					html += '<input class="input_self" type="password" name="password" id="cpwd" value="" />';
 					html += '</div>';
 					html += '<div class="input_tit">Conform Password</div>';
 					html += '<div class="input_box">';
-					html += '<input class="input_self" type=""password"" name="confpwd" id="cpassword" value="" />';
+					html += '<input class="input_self" type="password" name="confpwd" id="cpassword" value="" />';
 					html += '</div>';
 					html += '<div class="input_tit">Your Tel</div>';
 					html += '<div class="input_box">';
-					html += '<input class="input_self" type=""password"" name="tel" id="ctel" value="" />';
+					html += '<input class="input_self" type="password" name="tel" id="ctel" value="" />';
 					html += '</div>';
 					html += '<div class="finish_box" id="return">';
 					html += '<input class="finish_btn" type="button" value="Change" onclick="UpdatePwd()"/>';
@@ -304,10 +334,10 @@
 								}
 							});
 						}
-						else if(acc.length<=6){
+						else if(acc.length<=5){
 							var html = '<div style="font-size:18px;text-align:center;color:#66a3ff;">';
 							html += 'Error! Account is Error<br/>';
-							html += "tip: Account'length is 6 at least!";
+							html += "tip: Account'length is 5 at least!";
 							html += '</div>';
 							$("#return").empty().append(html);
 							setTimeout("ChangePwdUpbutton()",999);
@@ -320,10 +350,10 @@
 							$("#return").empty().append(html);
 							setTimeout("ChangePwdUpbutton()",999);
 						}
-						else if(pwd.length<=6){
+						else if(pwd.length<=5){
 							var html = '<div style="font-size:18px;text-align:center;color:#66a3ff;">';
 							html += 'Error! Password is Error<br/>';
-							html += "tip: Password'length is 6 at least!";
+							html += "tip: Password'length is 5 at least!";
 							html += '</div>';
 							$("#return").empty().append(html);
 							setTimeout("ChangePwdUpbutton()",999);
@@ -370,11 +400,11 @@
 				html += '<div class="blank_30"></div>';
 				html += '<div class="input_tit">Password</div>';
 				html += '<div class="input_box" >';
-				html += '<input class="input_self" type=""password"" name="password" id="pwd"  value="" />';
+				html += '<input class="input_self" type="password" name="password" id="pwd"  value="" />';
 				html += '</div>';
 				html += '<div class="input_tit">Conform Password</div>';
 				html += '<div class="input_box" >';
-				html += '<input class="input_self" type=""password"" name="conformPassword" id="password"  value="" />';
+				html += '<input class="input_self" type="password" name="conformPassword" id="password"  value="" />';
 				html += '</div>';
 				html += '<div class="input_tit">Your Tel</div>';
 				html += '<div class="input_box" >';
@@ -400,18 +430,18 @@
 					cache: false,
 					async : false, 
 					success: function (data,textStatus, jqXHR){
-						if(acc.length<=6){
+						if(acc.length<=5){
 							var html = '<div style="font-size:18px;text-align:center;color:#66a3ff;">';
 							html += 'Error! Account is Error<br/>';
-							html += "tip: Account'length is 6 at least!";
+							html += "tip: Account'length is 5 at least!";
 							html += '</div>';
 							$("#return").empty().append(html);
 							setTimeout("signUpbutton()",999);
 						}
-						else if(pwd.length<=6){
+						else if(pwd.length<=5){
 							var html = '<div style="font-size:18px;text-align:center;color:#66a3ff;">';
 							html += 'Error! Password is Error<br/>';
-							html += "tip: Password'length is 6 at least!";
+							html += "tip: Password'length is 5 at least!";
 							html += '</div>';
 							$("#return").empty().append(html);
 							setTimeout("signUpbutton()",999);
@@ -508,5 +538,10 @@
 			function ToAdminlogin(id){
 				window.location.href="/maven02/html/back.html#?id="+id+"";
 			}
+			console.info("@witter--YangWenchang");
+			/* 
+			 * @witter
+			 * 杨文畅 
+			 */
 	</script>
 </html>

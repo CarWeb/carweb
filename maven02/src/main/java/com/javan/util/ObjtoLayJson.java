@@ -2,8 +2,6 @@ package  com.javan.util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -16,6 +14,7 @@ public class ObjtoLayJson {
 	
 	public static  String toJson(Object object,String[] colums) throws Exception {
 		 String[] dataRow = new String[colums.length];
+		
 		Field[] fields = object.getClass().getDeclaredFields();
 		for (int i = 0; i < fields.length; i++) {
 			String fieldName = fields[i].getName();
@@ -27,9 +26,8 @@ public class ObjtoLayJson {
 			}else {
 				dataRow[i] =  method.invoke(object).toString();
 			}
-			System.out.println("get"+method.invoke(object));
 		}
-		System.out.println(Arrays.toString(dataRow));
+		//System.out.println(Arrays.toString(dataRow));
 		
 		String jsonStr = "[{\"status\":0}, {\"message\": \"成功了\" }, {\"count\": 1000},{\"rows\":{\"item\":[";
 		for(int i = 0; i < dataRow.length; i++) {
@@ -54,6 +52,7 @@ public class ObjtoLayJson {
 		return jsonStr;
 	}
 	
+	
 	public static  <T> String ListtoJson(List<T> objects,String[] colums) throws Exception {
 		String[][] dataRow = new String[objects.size()][colums.length];
 		int count = 0;
@@ -69,27 +68,28 @@ public class ObjtoLayJson {
 				}else {
 					dataRow[count][i] =  method.invoke(object).toString();
 				}
-				System.out.println(method.invoke(object));
+				
 			
 			}
 			count += 1;
 		}
 	
-		System.out.println(Arrays.deepToString(dataRow));
+		
 		
 		String jsonStr = "[{\"status\":0}, {\"message\": \"成功了\" }, {\"count\": 1000},{\"rows\":{\"item\":[";
 		for(int i = 0; i < dataRow.length; i++) {
-			System.out.println(i);
+			
 			String arr = "{";
 			for( int j = 0; j < dataRow[i].length; j++) {
+				//System.out.println("j======"+j);
 				if(dataRow[i][j] == null || "NULL".equals(dataRow[i][j])) {
 					arr += "\"\"";
 				}else {
 					arr += "\"" + colums[j] + "\""+":" ;
 					arr +=  "\"" +dataRow[i][j] + "\"";
 				}
-				
-				if( j <= dataRow[i][j].length() - 1 ) {
+			
+				if( j < dataRow[i].length - 1 ) {
 					arr += ",";
 				}
 			}

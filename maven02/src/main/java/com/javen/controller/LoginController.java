@@ -20,14 +20,17 @@ import com.javen.service.LoginService;
 public class LoginController {  
 	
 	@Resource  
-	private LoginService loginService;     
-	@RequestMapping(value="/back", method=RequestMethod.GET,produces = "text/plain;charset=utf-8")
-    public String back(HttpServletRequest request,Model model) throws Exception{  
-		request.setCharacterEncoding("utf-8");
-//		String string = request.getParameter(""); 
-//		System.out.println(string);
-		return null;
-	}
+	private LoginService loginService;
+	
+	@ResponseBody
+    @RequestMapping(value="/showtable", method=RequestMethod.GET,produces = "text/json;charset=utf-8")  
+    public String showtable(HttpServletRequest request) throws Exception{
+    	request.setCharacterEncoding("utf-8");
+    	List<Login> list = loginService.selectAll();
+    	String json = JSON.toJSONString(list);
+    	System.out.println(json);
+		return json;
+    }
     
     @ResponseBody
     @RequestMapping(value="/selectByName", method=RequestMethod.GET,produces = "text/json;charset=utf-8")  
