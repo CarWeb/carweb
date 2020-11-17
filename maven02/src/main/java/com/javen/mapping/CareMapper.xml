@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.javen.dao.CareDao">
+  <resultMap id="BaseResultMap" type="com.javen.model.Care">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="mileage" jdbcType="INTEGER" property="mileage" />
+    <result column="caretimes" jdbcType="INTEGER" property="caretimes" />
+    <result column="car" jdbcType="INTEGER" property="car" />
+    <result column="caredate" jdbcType="INTEGER" property="caredate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, mileage, caretimes, car, caredate
+  </sql>
+  
+   <select id="selectAll" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from care
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from care
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.javen.model.Care">
+    insert into care (id, mileage, caretimes, 
+      car, caredate)
+    values (#{id,jdbcType=INTEGER}, #{mileage,jdbcType=INTEGER}, #{caretimes,jdbcType=INTEGER}, 
+      #{car,jdbcType=INTEGER}, #{caredate,jdbcType=INTEGER})
+  </insert>
+  
+  
+  <update id="updateByPrimaryKey" parameterType="com.javen.model.Care">
+    update care
+    set mileage = #{mileage,jdbcType=INTEGER},
+      caretimes = #{caretimes,jdbcType=INTEGER},
+      car = #{car,jdbcType=INTEGER},
+      caredate = #{caredate,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

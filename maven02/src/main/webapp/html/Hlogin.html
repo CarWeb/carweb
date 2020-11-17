@@ -1,0 +1,320 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
+</script>
+<style>
+    .div1{
+           width:160px;height:40px;float:left;margin-left:120px;margin-top:40px;background-color:#001;color:#ff5;font-size:17px;line-height:40px;text-align:center;
+         }
+    .div2{
+           color:#67f;width:110px;height:110px;float:left;background-color:#001;font-size:17px;line-height:110px;text-align:center;
+         }
+      #fade{ 
+            display: none; 
+            position: absolute; 
+            top: 0%; 
+            left: 0%; 
+            width: 100%; 
+            height: 100%; 
+			background-color:#fff;
+            z-index:1001;
+            opacity:.75; 
+        } 
+        #light { 
+            display: none; 
+            position: absolute; 
+            top: 25%; 
+            left: 29%; 
+            width: 40%; 
+            height: 50%; 
+            padding: 20px; 
+            border: 1px solid #111; 
+            background-color:#fff;
+            z-index:1002; 
+            overflow: auto; 
+			background-size:100%;
+        }
+         #arr { 
+            display: none; 
+            position: absolute; 
+            top: 25%; 
+            left: 29%; 
+            width: 40%; 
+            height: 50%; 
+            padding: 20px; 
+            border: 1px solid #111; 
+            background-color:#fff;
+            z-index:1002; 
+            overflow: auto; 
+			background-size:100%;
+        }
+         #srr { 
+            display: none; 
+            position: absolute; 
+            top: 25%; 
+            left: 29%; 
+            width: 40%; 
+            height: 50%; 
+            padding: 20px; 
+            border: 1px solid #111; 
+            background-color:#fff;
+            z-index:1002; 
+            overflow: auto; 
+			background-size:100%;
+        }
+		.addifo{
+			border:1px solid #111;
+			background-color:#fff;
+			color:#111;
+			width:250px;
+			height:35px;
+			font-size:16px;
+			padding-left:12px;
+			border-radius: 5px;
+			margin-top:20px;
+		}
+		#button{
+			background-color:#111;
+			color:#fff;
+			width:109px;
+			height:30px;
+			border:1px solid #fff;
+			border-radius: 5px;
+			margin-top:5px;
+		}
+		#inputarea{
+			width:80%;
+			height:90%;
+			margin-left:9.5%;
+			margin-top:6%;
+		}
+</style>
+
+</head>
+<body>
+	<div style="width:100%;height:110px;background-color:#001;">
+	<div class="div2">您的车辆管理</div>
+	<div class="div1" onclick="show()">提交车辆信息</div>
+	<div class="div1" onclick="show1()">更改个人信息</div>
+	<div class="div1" onclick="show2()">添加保养信息</div>
+	</div></div>
+	<div style="width:100%;height:370px;background-color:#002;">
+	<div id="list" style="width:80%;margin-left:10%;background-color:#ddd;"></div>
+	</div>
+	<div id="light"  style="">
+			<div id="inputarea" align="center" >
+				<input type="text" placeholder="车辆型号" class="addifo" id="model"/><br/>		
+				<input type="text" placeholder="排气量" class="addifo" id="displacement"/><br/>
+				<input type="text" placeholder="生产年份" class="addifo" id="produceYear"/><br/>
+				<input type="button" value="添加" onclick="update()" id="button" /><br/>
+				<input type="button" value="返回" onclick="disshow()" id="button" /><br/>
+			</div>
+		</div>
+		<div id="arr"  style="">
+			<div id="inputarea" align="center" >
+				<input type="text" placeholder="手机号" class="addifo" id="tel"/><br/>
+				<input type="text" placeholder="用户名" class="addifo" id="acc"/><br/>
+				<input type="button" value="确认更改" onclick="update1()" id="button" /><br/>
+				<input type="button" value="返回" onclick="disshow1()" id="button" /><br/>
+			</div>
+		</div>
+		<div id="srr"  style="">
+			<div id="inputarea" align="center" >
+				<input type="text" placeholder="更新里程数" class="addifo" id="mileage"/><br/>
+	    	    <input type="text" id="careDate" value="保养时间"  class="addifo"/><br/>
+			    <input type="button" value="获取当前时间" onclick="getDate()" id="button"/><br/>
+				<input type="button" value="添加" onclick="confirm()" id="button" /><br/>
+				<input type="button" value="返回" onclick="disshow2()" id="button" /><br/>
+			</div>
+		</div>
+</body>
+ <script type="text/javascript">
+        function show(){//显示
+            document.getElementById('light').style.display='block';
+        }
+        function disshow(){//不显示
+            document.getElementById('light').style.display='none';
+        }
+</script>
+
+ <script type="text/javascript">
+        function show1(){//显示
+            document.getElementById('arr').style.display='block';
+        }
+        function disshow1(){//不显示
+            document.getElementById('arr').style.display='none';
+        }
+</script>
+
+<script type="text/javascript">
+        function show2(){//显示
+            document.getElementById('srr').style.display='block';
+        }
+        function disshow2(){//不显示
+            document.getElementById('srr').style.display='none';
+        }
+</script>
+<script>
+
+$(document).ready(function(){
+	var loc = location.href;
+	var n1 = loc.length;//地址的总长度
+	var n2 = loc.indexOf("=");//取得=号的位置
+	var id = decodeURI(loc.substr(n2+1, n1-n2));//从=号后面的内容
+	var url = "http://localhost:8080/maven02/Hcar/selectById";
+	$.ajax({
+	       type: "get",
+	       url: url,
+	       data: {"id":id},
+	       cache: false,
+	       async : false,
+	       dataType: "JSON",
+	       success: function (data){
+	       	  console.log(data);
+	       	  var html = '<table style="width:100%;">';
+	       	      html += '<tr>';
+	       	      html += '<td style="text-align:center">序号</td>';
+	       	      html += '<td style="text-align:center">汽车型号</td>';
+	       		  html += '<td style="text-align:center">发动机排量</td>';
+	       		  html += '<td style="text-align:center">出厂年份</td>';
+	       	      html += '</tr>';
+	       
+	       	  for( var i = 1; i <=data.length; i++){
+	       		  
+	       		 html += '<tr>';
+	       	      html += '<td style="text-align:center">' + i + '</td>';
+	       	      html += '<td style="text-align:center">' + data[i-1].model + '</td>';
+	       	      html += '<td style="text-align:center">' + data[i-1].displacement + '</td>';
+	       		  html += '<td style="text-align:center">' + data[i-1].produceYear + '</td>';
+	       	      html += '</tr>';
+	       	  }
+	       	  html += '</table>';
+	       	  $("#list").empty().append(html);
+	       },
+	       error:function (XMLHttpRequest, textStatus, errorThrown) {      
+	          
+	           alert(typeof(errorThrown));
+	       }
+	    });
+})
+
+//提交保养信息
+function confirm(){
+	var loc = location.href;
+	var n1 = loc.length;//地址的总长度
+	var n2 = loc.indexOf("=");//取得=号的位置
+	var id = decodeURI(loc.substr(n2+1, n1-n2));//从=号后面的内容
+	getDate();
+	var json = {
+			"mileage":$("#mileage").val(),
+			"careDate":$("#careDate").val(),
+	        id
+	};
+	
+	var url = "http://localhost:8080/maven02/Hcare/update";
+	$.ajax({
+	       type: "get",
+	       url: url,
+	       data: json,
+	       cache: false,
+	       async : false,
+	     //  dataType: "JSON",
+	       success: function (data ,textStatus, jqXHR)
+	       {
+	       		  disshow2();
+	       },
+	       error:function (XMLHttpRequest, textStatus, errorThrown) {      
+	          
+	           alert(typeof(errorThrown));
+	       }
+	    });
+}
+//提交车辆信息
+function update(){
+	var loc = location.href;
+	var n1 = loc.length;//地址的总长度
+	var n2 = loc.indexOf("=");//取得=号的位置
+	var id = decodeURI(loc.substr(n2+1, n1-n2));//从=号后面的内容
+	var data = {
+			"model":$("#model").val(),
+			"displacement":$("#displacement").val(),
+			"produceYear":$("#produceYear").val(),
+			id
+	};
+	
+	var url = "http://localhost:8080/maven02/Hcar/insert";
+	$.ajax({
+	       type: "get",
+	       url: url,
+	       data: data,
+	       cache: false,
+	       async : false,
+	     //  dataType: "JSON",
+	       success: function (data ,textStatus, jqXHR)
+	       {
+	    	   window.location.reload();//刷新当前页面
+	       },
+	       error:function (XMLHttpRequest, textStatus, errorThrown) {      
+	          
+	           alert(typeof(errorThrown));
+	       }
+	    });
+}
+//提交用户信息
+function update1(){
+	var loc = location.href;
+	var n1 = loc.length;//地址的总长度
+	var n2 = loc.indexOf("=");//取得=号的位置
+	var id = decodeURI(loc.substr(n2+1, n1-n2));//从=号后面的内容
+	var data = {
+			"tel":$("#tel").val(),
+			"acc":$("#acc").val(),
+			id
+	};
+	
+	var url = "http://localhost:8080/maven02/Huser/hupdate";
+	$.ajax({
+	       type: "get",
+	       url: url,
+	       data: data,
+	       cache: false,
+	       async : false,
+	     //  dataType: "JSON",
+	       success: function (data ,textStatus, jqXHR)
+	       {
+	    	   disshow1();
+	       },
+	       error:function (XMLHttpRequest, textStatus, errorThrown) {      
+	          
+	           alert(typeof(errorThrown));
+	       }
+	    });
+}
+function showtime(){
+    var timebox=document.getElementById('timebox');
+    function show(){                //定义函数show
+        var date =new Date();//日期
+        var year=date.getFullYear();
+        var month=date.getMonth()+1;
+        var day=date.getDate();
+
+        var hour=date.getHours();
+        var minute=date.getMinutes();
+        var second=date.getSeconds();
+        var time=year+"年"+month+"月"+day+"日"+hour+"时"+minute+"分"+second+"秒";
+        timebox.innerHTML=time;
+    }
+    setInterval(show,1000);        //计时器（1：调用show   2:1秒=1000毫秒  进行刷新）
+    show();                        //调用 show函数   作用是按下F5刷新时，屏幕不会出现间断。
+}
+function getDate(){
+	document.getElementById("careDate").value=(new Date().getFullYear())+""+(new Date().getMonth()+1)+""+(new Date().getDate());
+}
+
+</script>
+</html>

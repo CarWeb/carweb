@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.javen.dao.CarDao">
+  <resultMap id="BaseResultMap" type="com.javen.model.Car">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user" jdbcType="INTEGER" property="user" />
+    <result column="model" jdbcType="VARCHAR" property="model" />
+ 
+    <result column="displacement" jdbcType="DOUBLE" property="displacement" />
+    <result column="produceYear" jdbcType="INTEGER" property="produceYear" />
+    
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user, model, displacement, produceYear
+  </sql>
+ 
+   <select id="selectAll" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from car
+  </select>
+   <insert id="insert" parameterType="com.javen.model.Car">
+    insert into car (id, model,  
+      displacement, produceYear, user
+      )
+    values (#{id,jdbcType=INTEGER}, #{model,jdbcType=VARCHAR}, 
+      #{displacement,jdbcType=DOUBLE}, #{produceYear,jdbcType=INTEGER}, #{user,jdbcType=INTEGER}
+      )
+  </insert>
+  
+   <delete id="deleteByPrimaryKey"  parameterType="java.lang.Integer">
+    delete from car
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <update id="updateByPrimaryKey" parameterType="com.javen.model.Car">
+    update car
+    set model = #{model,jdbcType=VARCHAR},
+     
+      displacement = #{displacement,jdbcType=DOUBLE},
+      produceYear = #{produceYear,jdbcType=INTEGER},
+      user = #{user,jdbcType=INTEGER}
+     
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
